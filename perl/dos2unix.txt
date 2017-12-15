@@ -1,0 +1,6 @@
+// dos2unix - DOS/MAC to UNIX text file format converter
+dos2unix <FILE>
+
+./bcpdiff -c irc-att-1b.cfg
+./bcpdiff -c irc-att-1a.cfg -f -l 5831936944337039307
+

@@ -1,0 +1,649 @@
+#!/usr/bin/perl
+
+use strict;
+use Getopt::Long;
+
+
+our $EMPH=`tput bold`;
+our $NOCOL=`tput sgr0`;
+our $FBLACK=`tput setf 0`;
+our $FBLUE=`tput setf 1`;
+our $FGREEN=`tput setf 2`;
+our $FCYAN=`tput setf 3`;
+our $FRED=`tput setf 4`;
+our $FMAGENTA=`tput setf 5`;
+our $FYELLOW=`tput setf 6`;
+our $FWHITE=`tput setf 7`;
+
+our $BBLACK=`tput setb 0`;
+our $BBLUE=`tput setb 1`;
+our $BGREEN=`tput setb 2`;
+our $BCYAN=`tput setb 3`;
+our $BMAGENTA=`tput setb 5`;
+our $BRED=`tput setb 4`;
+our $BYELLOW=`tput setb 6`;
+our $BWHITE=`tput setb 7`;
+
+our $DISTANCE_COL;
+our $CONFIDENCE_COL;
+our $STREAM1_COL;
+our $STREAM2_COL;
+our $KEY_COL;
+our $HLT_COL;
+
+
+our $file1path;
+our $file1pattern;
+our $file2path;
+our $file2pattern;
+our $groupfield;
+our $ignorefields;
+our $matchconfidence;
+our $matchmethod;
+our $keyfields;
+our $rendertype;
+our $confidence_weight;
+our $distance_weight;
+our $match_window;
+our $hltfields;
+our @conditional_ignores;
+
+my $force;
+
+# print "${FBLACK}BLACK ${FRED}RED ${FGREEN}GREEN ${FYELLOW}YELLOW ${FBLUE}BLUE ${FCYAN}CYAN ${FMAGENTA}MAGENTA ${FWHITE}WHITE${NOCOL}\n";
+# print "${BBLACK}BLACK ${BRED}RED ${BGREEN}GREEN ${BYELLOW}YELLOW ${BBLUE}BLUE ${BCYAN}CYAN ${BMAGENTA}MAGENTA ${BWHITE}WHITE${NOCOL}\n";
+# exit;
+
+sub usage()
+{
+    print "usage: bcpdiff -c <config dir> [-l group] [-f|-force]\n";
+	exit(1);
+}
+
+sub logline()
+{
+    my ($message) = @_;
+
+    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+	$year += 1900; ## $year contains no. of years since 1900, to add 1900 to make Y2K compliant
+	my @month_abbr = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+	my @day_abbr = qw( Sun Mon Tues Wed Thur Fri Sat );
+	my $date = sprintf("%s %s %s %s %2.2d:%2.2d:%2.2d", $day_abbr[$wday],$month_abbr[$mon],$mday,$year,$hour,$min,$sec);
+
+    print "$date $message\n";
+}
+
+sub fatal()
+{
+    my ($message) = @_;
+    &logline("FATAL: $message");
+    exit(1);
+}
+
+sub warn()
+{
+    my ($message) = @_;
+    &logline("WARNING: $message");
+}
+
+sub info()
+{
+    my ($message) = @_;
+    &logline("INFO: $message");
+}
+
+sub process_file()
+{
+	my ($file, $function) = @_;
+	my @fieldmap;
+	
+	open (IN, "$file") or &fatal("Unable to open result file $file : $!");
+	while (<IN>)
+	{
+		chomp;
+		if ($_ =~ /##Desc/)
+		{
+			my ($header, $spec) = split("=", $_);
+			$header =~ /##Desc\[(\d+)\]/;
+			my $desc = $1;
+			my @defs = split(",", $spec);
+			my $defcount = @defs;
+			for (my $i=0;$i<$defcount;$i++)
+			{
+				my ($type, $fieldname) = split /\(/, $defs[$i];
+				chop $fieldname;
+				$fieldmap[$desc]{$fieldname} = $i + 1;
+			}
+		}
+		if ($_ !~ /^#/)
+		{
+			my @fields = split(/\|/, $_);
+			@fields[0] =~ s/\[(\d+)\]/$1/;
+			&$function(\@fieldmap, \@fields);			
+		}
+	}
+	close(IN);
+}
+
+sub process_spec()
+{
+	my ($spec, $function) = @_;
+	my $filecount = 0;
+	
+	foreach my $file (< $spec >)
+	{
+		#print $file. "\n";
+		&process_file($file, $function);
+		$filecount++;
+	}
+
+	return $filecount;
+}
+
+sub get_field()
+{
+	my ($map, $line, $field) = @_;
+	
+	my $desc = $$line[0];
+	
+	my $index;
+	
+	$index = $$map[$desc]{$field};
+	
+	return(@$line[$index]);
+	
+}
+
+sub get_group_info()
+{
+	my ($map, $line, $group, $totalgroup) = @_;
+
+	$$group{&get_field($map, $line, $groupfield)} = 1;
+	$$totalgroup{&get_field($map, $line, $groupfield)} = 1;
+	
+}
+
+sub run_group_analysis()
+{
+	my %file1group;
+	my %file2group;
+	my %commongroup;
+	my %totalgroup;
+
+	my $spec1 = "$file1path/$file1pattern";
+	my $spec2 = "$file2path/$file2pattern";
+	my $file1count = 0;
+	my $file2count = 0;
+	
+	$file1count = &process_spec($spec1, sub {my ($map, $line) = @_; &get_group_info($map, $line, \%file1group, \%totalgroup)});
+	$file2count = &process_spec($spec2, sub {my ($map, $line) = @_; &get_group_info($map, $line, \%file2group, \%totalgroup)});
+
+	my $common;
+	
+	foreach my $groupid (keys %file1group)
+	{
+		if ($file2group{$groupid})
+		{
+			$commongroup{$groupid} = 1;
+			$common .= $groupid . " ";
+		}
+	}
+	
+	my %uncommongroup;
+	my $file1only;
+	
+	foreach my $key (sort(keys(%file1group)))
+	{
+		if (!defined($file2group{$key}))
+		{
+			$file1only .= $key . " ";
+			$uncommongroup{$key} = 1;
+		}
+	}
+	
+	my $file2only;
+	foreach my $key (sort(keys(%file2group)))
+	{
+		if (!defined($file1group{$key}))
+		{
+			$file2only .= $key . " ";
+			$uncommongroup{$key} = 1;
+		}
+	}
+		
+	&logline("Stream 1: $file1count files processed, " . scalar(keys(%file1group)) . " unique $groupfield");
+	&logline("Stream 2: $file2count files processed, " . scalar(keys(%file2group)) . " unique $groupfield");
+	&logline("Total $groupfield: " . scalar(keys(%totalgroup)));
+	&logline("Common $groupfield: " . scalar(keys(%commongroup)));
+	&logline("$groupfield in Stream1 but not in Stream2: $file1only");
+	&logline("$groupfield in Stream2 but not in Stream1: $file2only");
+	&logline("Common $groupfield: $common");
+	
+	return (\%commongroup, \%uncommongroup);
+}
+
+sub get_group_lines()
+{
+	my ($map, $line, $group, $groupid) = @_;
+	my %fields;
+	if (!defined($groupfield) or &get_field($map, $line, $groupfield) eq $groupid)
+	{
+		foreach my $field (keys(%{$$map[$$line[0]]}))
+		{
+			$fields{$field} = &get_field($map, $line, $field);
+		}
+
+		push(@$group, \%fields);
+	}
+}
+
+sub render_line()
+{
+	my ($line) = @_;
+	
+	my $rendered_line;
+	
+	foreach my $key (sort(keys(%$line)))
+	{
+		my $val;
+		if ($keyfields =~ /$key/)
+		{
+			$val = $KEY_COL . $$line{$key} . $NOCOL;
+		}
+		elsif ($hltfields =~ /$key/)
+		{
+			$val = $HLT_COL . $$line{$key} . $NOCOL;
+		}
+		else
+		{
+			$val = $$line{$key};
+		}
+		
+		if ($rendertype eq "keyvalue")
+		{
+			$rendered_line .= "$key=$val ";
+		}
+		if ($rendertype eq "pipe" or !defined($rendertype))
+		{
+			$rendered_line .= "$val|";
+		}
+	}
+	return($rendered_line);
+}
+
+sub match_confidence()
+{
+	my ($line1, $line2) = @_;
+	
+	my $total_check = 0;
+	my $total_match = 0;
+	
+	# First verify the same fields are present in both
+	
+	if (scalar(keys(%$line1)) != scalar(keys(%$line2)))
+	{
+		return 0;
+	}
+	
+	# Check key fields and fail if they are present but do not match
+	
+	my @names = split(/ /, $keyfields);
+	foreach my $keyfield (@names)
+	{
+		#&logline("$keyfield: $$line1{$keyfield} $$line2{$keyfield}");
+		if (defined($$line1{$keyfield}) && defined($$line2{$keyfield}))
+		{
+			if ($$line1{$keyfield} ne $$line2{$keyfield})
+			{
+				return 0;
+			}
+		}
+	}
+	
+	#
+	# Process Condiitonal Ignores
+	#
+	# Build a list of fields to ignore for this line
+	#
+	
+	my $ignorefields1 = "";
+	
+	foreach my $condition (@conditional_ignores)
+	{
+		if ($condition !~ /^(.+),(.+),(.+),(.+)$/)
+		{
+			&fatal("Invalid conditional ignore: $condition");
+		}
+		
+		my $testfield = $1;
+		my $condition = $2;
+		my $value = $3;
+		my $ignorefield = $4;
+		
+		my $val = $$line1{$testfield};
+		my $eval = "'$val' $condition '$value'";
+		$eval =~ s/\\/\\\\/g;
+
+		if (eval($eval))
+		{
+			$ignorefields1 .= $ignorefield . " ";
+		}		
+	}
+	
+	foreach my $key (keys(%$line1))
+	{
+		#&logline("$key $$line1{$key} $$line2{$key}");
+		if (!defined($$line2{$key}))
+		{
+			return 0;
+		}
+
+		
+		my $allignore = $ignorefields . " " . $ignorefields1;
+		
+		my $ignoreit = 0;
+		
+		my @ignores = split(/ /, $allignore);
+		foreach my $ignore (@ignores)
+		{
+			if ($ignore eq $key)
+			{
+				$ignoreit = 1;
+				last;
+			}
+		}
+		
+		if (not $ignoreit)
+		{
+			if ($matchmethod eq "field")
+			{
+				if ($$line1{$key} eq $$line2{$key})
+				{
+					#&logline($key . "  " . $$line1{$key} . " " . $$line2{$key});
+					$total_match++;
+				}
+				$total_check++;
+			}
+			else
+			{
+			}
+		}
+		else
+		{
+		}
+	}
+	
+	return $total_match / $total_check;
+	
+}
+
+sub compare_lines()
+{
+	my ($line1, $line2) = @_;
+	
+	my %newline;
+	
+	foreach my $key (keys(%$line1))
+	{
+		my $val1;
+		my $val2; 
+		
+		$val1 = $$line1{$key};
+		$val2 = $$line2{$key};
+		
+		if ($$line1{$key} eq $$line2{$key} or $ignorefields =~ /$key/)
+		{
+			$newline{$key} = $val1;
+		}
+		else
+		{
+			$newline{$key} = $STREAM1_COL . $val1 . $NOCOL . "|" . $STREAM2_COL . $val2 . $NOCOL;
+		}
+	}
+	return (&render_line(\%newline));
+}
+
+sub get_confidence_product()
+{
+	my ($c, $d, $total) = @_;
+	
+	$d = abs $d;
+	
+	my $p;
+	
+	$p = ($confidence_weight*$c + $distance_weight*(1 - ($d/$total)));
+	
+	return $p;
+	
+}
+
+sub compare_confidence_and_distance
+{	
+	if (defined($a) and defined ($b))
+	{
+		return $b->{"cp"} <=> $a->{"cp"};
+	}
+	else
+	{
+		return 1;
+	}
+}
+
+sub do_diff()
+{
+	my ($group1, $group2) = @_;
+	
+	my $total = scalar(@$group1);
+	
+	my $line1;
+	my $line2;
+	my $l1num = 0;
+	
+	my @confidence;
+	
+	foreach $line1 (@$group1)
+	{
+		my $l2num;
+		my $startline;
+		my $endline;
+		
+		if (!defined($match_window) or $match_window == 0)
+		{
+			$startline = 0;
+			$endline = scalar(@$group2);
+		}
+		else
+		{
+			$startline = $l1num - $match_window;
+			$endline = $l1num + $match_window;
+			
+			if ($startline < 0) {$startline = 0};
+			if ($endline > scalar(@$group2)) {$endline = scalar(@$group2)};
+		}
+
+		for ($l2num = $startline; $l2num < $endline;$l2num++)
+		{
+			my $confidence = &match_confidence($line1, $$group2[$l2num]);
+			my $distance = $l2num - $l1num;
+#&logline(sprintf("sl=%s dl=%s c=%.2f,d=%d cp=%2.2f", $l1num, $l2num, $confidence, $distance, &get_confidence_product($confidence, $distance, $total)));
+			my $entries = {c => $confidence, d => $distance, cp => &get_confidence_product($confidence, $distance, $total),  l1 => $l1num, l2 => $l2num};
+			$confidence[$l1num][$l2num] = $entries;
+		}
+		
+		if (defined(@{$confidence[$l1num]}))
+		{
+			my @sorted = sort compare_confidence_and_distance @{$confidence[$l1num]};
+			@{$confidence[$l1num]} = @sorted;
+		}
+		$l1num++;
+	}
+	
+	# Now match the lines up
+	
+	my %unmatched1;
+	my %matched2;
+	my $differences = 0;
+	
+	for (my $line = 0;$line < scalar(@$group1);$line++)
+	{
+# &logline("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+# &logline(&render_line($$group1[$line]));
+# &logline("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		my $match;
+		for (my $conf = 0;$conf < scalar(@{$confidence[$line]});$conf++)
+		{
+			my $c = @{$confidence[$line]}[$conf];
+			#my @rc = @{$reverseconfidence[$c->{"l2"}]};
+			my $thisc = $c->{'c'};
+			#my $highestrc = $rc[0]->{'c'};
+			if ($c->{'c'} < $matchconfidence)
+			{
+				last;
+			}
+# &logline(sprintf("${CONFIDENCE_COL}c=%.2f${NOCOL} ${DISTANCE_COL}d=%d${NOCOL}: %s", $c->{"c"},&compare_lines($$group1[$line], $$group2[$c->{"l2"}])));
+# &logline("========================================================");
+			
+			$match = $c;
+			# This is likely to be the best match we can find
+			
+			# If we have multiple matches with this confidence, they are ranked in order of ditance preffering closer lines
+			
+			last;
+		}
+		#
+		# Ok, by now either we have a match or match is undefined
+		#
+		if ($match)
+		{
+			$matched2{$match->{"l2"}} = 1;
+			if ($match->{"c"} < 1)
+			{
+				$differences++;
+			}
+			
+			if ($match->{"c"} < 1 or $force)
+			{
+
+				my $dcol;
+				if ($match->{"d"} != 0)
+				{
+					$dcol = $DISTANCE_COL;
+				}
+				else
+				{	
+					$dcol = $NOCOL;
+				}
+				
+				&logline(sprintf("sl=%d dl=%d ${CONFIDENCE_COL}c=%.2f${NOCOL} ${dcol}d=%d${NOCOL}: %s", $match->{"l1"}, $match->{"l2"}, $match->{"c"}, $match->{"d"}, &compare_lines($$group1[$match->{"l1"}], $$group2[$match->{"l2"}])));
+			}
+		}
+		else
+		{	
+			$unmatched1{$line} = 1;
+		}
+	}
+	
+	foreach my $key (sort(keys(%unmatched1)))
+	{
+		&logline(sprintf("${STREAM1_COL}UNMATCHED:$NOCOL %s",&render_line($$group1[$key])));	
+		$differences++;
+	}
+	
+	for (my $line = 0;$line < scalar(@$group2);$line++)
+	{
+		if (!defined ($matched2{$line}))
+		{
+			$differences++;
+			&logline(sprintf("${STREAM2_COL}UNMATCHED:$NOCOL %s",&render_line($$group2[$line])));		
+		}
+	}
+	
+	if ($differences == 0)
+	{
+		&logline("Processing complete - 100% match found");
+	}
+	else
+	{
+		&logline("Processing complete - $differences differences found");
+	}
+	
+}
+
+sub run_individual_group()
+{
+	my ($groupid) = @_;
+	
+	&logline("Processing $groupfield: $groupid");
+	
+	my $spec1 = "$file1path/$file1pattern";
+	my $spec2 = "$file2path/$file2pattern";
+	
+	my @group1;
+	my @group2;
+	
+	&process_spec($spec1, sub {my ($map, $line) = @_; &get_group_lines($map, $line, \@group1, $groupid)});
+	&process_spec($spec2, sub {my ($map, $line) = @_; &get_group_lines($map, $line, \@group2, $groupid)});
+	
+	&logline("${STREAM1_COL}Stream 1: " . scalar(@group1) . " lines${NOCOL}");
+	&logline("${STREAM2_COL}Stream 2: " . scalar(@group2) . " lines${NOCOL}");
+	
+	&do_diff(\@group1, \@group2)
+	
+}
+
+my $configfile;
+my $listgroup;
+my $unmatched;
+
+GetOptions
+(
+	"config=s"=>\$configfile,
+	"list=s"=>\$listgroup,
+	"unmatched"=>\$unmatched,
+	"force"=>\$force,
+);
+
+if ($configfile eq "")
+{
+	&logline("Config file unspecified");
+	&usage;
+}
+	  
+if ( -f $configfile)
+{
+    eval 'require("$configfile")' || &fatal("error in configuration file $configfile:\n$@\n");
+}
+else
+{
+    &fatal("unable to find configuration file : $configfile");
+}
+
+&logline("Processing begins, matchconfidence = $matchconfidence");
+
+my $commongroup;
+my $uncommongroup;
+
+if (defined($listgroup))
+{
+	$commongroup = {$listgroup => 1}
+}
+else
+{
+	($commongroup, $uncommongroup) = &run_group_analysis();
+}
+
+if ($unmatched)
+{
+	foreach my $groupid (keys %$uncommongroup)
+	{
+		&run_individual_group($groupid);
+	}
+}
+else
+{
+	foreach my $groupid (keys %$commongroup)
+	{
+		&run_individual_group($groupid);
+	}
+}
+
