@@ -1,0 +1,33 @@
+#! /bin/bash
+
+
+SERVER=mtw-flood-dbc
+PORT=9017
+
+#SERVER=mtw-flood-asc
+#PORT=50025
+
+#HOST=mtw-flood-dbc;for((port=9017;port<=9019;++port));do echo -en "$port ";if echo -en "open $HOST $port\nlogout\quit" | telnet 2>/dev/null | grep 'Connected to' > /dev/null;then echo -en "\n\nport $port/tcp is open\n\n";fi;done
+
+
+#telnet $SERVER $PORT&
+#telnet $SERVER $PORT 1>/dev/null 2>&1&
+#echo -en "open $SERVER $PORT\nlogout\quit" | telnet 1>/dev/null 2>&1&
+#echo -en "open $SERVER $PORT\nlogout" | telnet 1>/dev/null 2>&1&
+echo -en "open $SERVER $PORT" | telnet 
+
+#netstat -an |grep $PORT |grep ESTABLISHED
+#netstat -an |egrep "$PORT*ESTABLISHED$"
+
+#if [ $? -eq 0 ]; then
+   #sleep 1
+   #kill -9 $! 1>/dev/null 2>&1
+   if [ $? -eq 0 ]; then
+      echo $? --- 0 == SUCCESS 
+   else
+      echo $? --- !0 == FAIL 
+   fi
+#fi
+#kill -9 $! 1>/dev/null 2>&1
+ps -ef |grep telnet
+

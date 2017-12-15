@@ -1,0 +1,21 @@
+load averages:  12.1,  14.5,  18.7;                    up 66+01:10:21  19:02:52
+475 processes: 459 sleeping, 7 zombie, 9 on cpu
+CPU states: 28.6% idle, 85.2% user, 93.2% kernel,  0.0% iowait,  100.0% swap
+Memory: 128G phys mem, 92G free mem, 4005M total swap, 1533M free swap
+
+   PID USERNAME LWP PRI NICE  SIZE   RES STATE    TIME    CPU COMMAND
+ 18082 flood      1   0    0   81M   78M cpu/1    0:02  6.45% python2.6
+ 24314 flood      1   0    0   10M 8256K cpu/9    5:11  6.25% Sizup
+ 11726 flood      1   0    0 1648K 1072K cpu/0    0:01  6.04% fgrep
+ 22758 flood      1  10    0 1231M 1226M cpu/2   78:27  5.86% python2.6
+ 29760 flood      1   0    0   47M   42M cpu/12 206:29  5.58% python2.6
+  6759 floodxfr   1  60    0 1744K 1112K sleep    0:10  1.27% find
+ 11907 flood      1   0    0 6056K 4456K sleep    0:00  1.16% update_derived_
+ 11903 flood      1   0    0 6072K 4360K sleep    0:00  1.02% update_derived_
+ 11725 flood      1   0    0 9784K 5856K sleep    0:00  0.93% cat
+ 18056 flood      1  45    0  981M  683M sleep    0:37  0.53% tail
+  7538 root       1  60    0 5512K 2480K sleep    0:01  0.30% sam-releaser
+ 19783 flood      1   0    0 4616K 1800K sleep    0:07  0.23% update_mgr
+ 11745 rb868x     1  49    0 4344K 2696K cpu/5    0:00  0.21% top
+ 11918 flood      1   0    0 5784K 3552K cpu/4    0:00  0.17% python2.6
+ 11922 flood      1   0    0 4584K 2920K cpu/6    0:00  0.16% clean_datfls.pl

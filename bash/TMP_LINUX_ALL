@@ -1,0 +1,113 @@
+top - 14:43:26 up 323 days, 23:56,  2 users,  load average: 3.00, 3.00, 3.00
+Tasks:  82 total,   1 running,  81 sleeping,   0 stopped,   0 zombie
+Cpu(s):  85.2% us,  93.2% sy,  100% ni, 98.0% id,  0.4% wa,  0.2% hi,  0.0% si
+Mem:   8185892k total,  8165896k used,    19996k free,    31224k buffers
+Swap: 16777208k total,      428k used, 16776780k free,  8048592k cached
+
+  PID USER          PR  NI  VIRT  RES  SHR S %CPU    %MEM    TIME+  COMMAND                                                                                           
+    1 CPU_CRIT      34  19     0    0    0 S   96    94      0:13.37 ksoftirqd/1
+    2 CPU_CRIT      34  19     0    0    0 S   96.1  89      0:13.37 ksoftirqd/1
+    3 CPU_CRIT      RT  99     0    0    0 S   120   87.0    0:84.38 migration/2
+    4 CPU_CRIT      RT   0     0    0    0 S   100.9 0.0     0:99.38 migration/2
+  100 CPU_CRIT      RT   0     0    0    0 S   100   100.0   0:99.38 migration/2
+    5 CPU_WARN      34  19     0    0    0 S   90    89.0    0:00.22 ksoftirqd/0
+    6 CPU_WARN      34  19     0    0    0 S   90.9  89.9    0:00.22 ksoftirqd/0
+    7 CPU_WARN      RT  99     0    0    0 S   95    85.9    0:84.63 migration/1
+    8 CPU_WARN      RT  86     0    0    0 S   95.9  84.9    0:99.63 migration/1
+  102 CPU_WARN      RT  86     0    0    0 S   95    84.9    0:99.63 migration/1
+    9 CPU_INFO      16   0  2660  540  464 S   85    84.9    2:99.06 init                                                                                              
+   10 CPU_INFO      16   0  2660  540  464 S   85.9  84.0    2:99.06 init
+   11 CPU_INFO      RT   0     0    0    0 S   89    84      0:06.87 migration/0                                                                                       
+   12 CPU_INFO      RT   0     0    0    0 S   89.9  80      0:06.87 migration/0
+  104 CPU_INFO      RT   0     0    0    0 S   89    81      0:06.87 migration/0
+   21 MEM_CRIT      34  19     0    0    0 S   94    96      0:13.37 ksoftirqd/1
+   22 MEM_CRIT      34  19     0    0    0 S   89    96.1    0:13.37 ksoftirqd/1
+   23 MEM_CRIT      RT  99     0    0    0 S   87.0  120     0:84.38 migration/2
+   24 MEM_CRIT      RT   0     0    0    0 S   0.0   100.99  0:99.38 migration/2
+  101 MEM_CRIT      RT   0     0    0    0 S   100.0 100     0:99.38 migration/2
+   25 MEM_WARN      34  19     0    0    0 S   89.0  90      0:00.22 ksoftirqd/0
+   26 MEM_WARN      34  19     0    0    0 S   89.9  90.9    0:00.22 ksoftirqd/0
+   27 MEM_WARN      RT  99     0    0    0 S   85.9  95      0:84.63 migration/1
+   28 MEM_WARN      RT  86     0    0    0 S   84.9  95.9    0:99.63 migration/1
+  103 MEM_WARN      RT  86     0    0    0 S   84.9  95      0:99.63 migration/1
+   29 MEM_INFO      16   0  2660  540  464 S   84.9  85      2:99.06 init
+   30 MEM_INFO      16   0  2660  540  464 S   84.0  85.9    2:99.06 init
+   31 MEM_INFO      RT   0     0    0    0 S   84    89      0:06.87 migration/0
+   32 MEM_INFO      RT   0     0    0    0 S   80    89.9    0:06.87 migration/0
+  105 MEM_INFO      RT   0     0    0    0 S   81    89      0:06.87 migration/0
+    8 root      RT   0     0    0    0 S    0  0.0   0:05.58 migration/3                                                                                       
+    9 root      34  19     0    0    0 S    0  0.0   0:99.39 ksoftirqd/3                                                                                       
+   10 root       5 -10     0    0    0 S    0  0.0   0:00.58 events/0                                                                                          
+   11 root       5 -10     0    0    0 S    0  0.0   0:04.32 events/1                                                                                          
+   12 root       5 -10     0    0    0 S    0  0.0   0:00.45 events/2                                                                                          
+   13 root       5 -10     0    0    0 S    0  0.0   0:00.24 events/3                                                                                          
+   14 root       5 -10     0    0    0 S    0  0.0   0:00.00 khelper                                                                                           
+   15 root      15 -10     0    0    0 S    0  0.0   0:00.00 kacpid                                                                                            
+   52 root       5 -10     0    0    0 S    0  0.0   0:00.00 kblockd/0                                                                                         
+   53 root       5 -10     0    0    0 S    0  0.0   0:00.00 kblockd/1                                                                                         
+   54 root       5 -10     0    0    0 S    0  0.0   0:00.00 kblockd/2                                                                                         
+   55 root       5 -10     0    0    0 S    0  0.0   0:00.00 kblockd/3                                                                                         
+   56 root      15   0     0    0    0 S    0  0.0   0:00.00 khubd                                                                                             
+   75 root      15   0     0    0    0 S    0  0.0  19:12.98 kswapd0                                                                                           
+   76 root      15 -10     0    0    0 S    0  0.0   0:00.00 aio/0                                                                                             
+   77 root      15 -10     0    0    0 S    0  0.0   0:00.00 aio/1                                                                                             
+   78 root      15 -10     0    0    0 S    0  0.0   0:00.00 aio/2                                                                                             
+   79 root      15 -10     0    0    0 S    0  0.0   0:00.00 aio/3                                                                                             
+  223 root      25   0     0    0    0 S    0  0.0   0:00.00 kseriod                                                                                           
+  488 root      15   0     0    0    0 D    0  0.0   0:00.00 scsi_eh_0                                                                                         
+  489 root      15   0     0    0    0 D    0  0.0   2:17.38 usb-storage                                                                                       
+  495 root      16   0     0    0    0 S    0  0.0   0:00.00 scsi_eh_1                                                                                         
+  496 root      15   0     0    0    0 S    0  0.0   0:57.22 usb-storage                                                                                       
+  521 root      16   0     0    0    0 S    0  0.0   0:00.00 scsi_eh_2                                                                                         
+  543 root      15   0     0    0    0 S    0  0.0  20:14.72 kjournald                                                                                         
+ 1809 root      15   0     0    0    0 S    0  0.0   0:00.61 pdflush                                                                                           
+ 1907 root       6 -10  3440  444  360 S    0  0.0   0:00.00 udevd                                                                                             
+ 2026 root       5 -10     0    0    0 S    0  0.0   0:00.04 kedac                                                                                             
+ 2079 root       6 -10     0    0    0 S    0  0.0   0:00.00 kauditd                                                                                           
+ 2899 root      16   0  2492  584  492 S    0  0.0   1:10.13 syslogd                                                                                           
+ 2903 root      16   0  2684  388  320 S    0  0.0   0:00.07 klogd                                                                                             
+ 2917 root      16   0  2420  296  216 S    0  0.0   3:00.58 irqbalance                                                                                        
+ 2936 rpc       16   0  2288  592  488 S    0  0.0   0:00.00 portmap                                                                                           
+ 2956 rpcuser   18   0  3376  736  632 S    0  0.0   0:00.00 rpc.statd                                                                                         
+ 2988 root      16   0  5556  452  240 S    0  0.0   0:00.06 rpc.idmapd                                                                                        
+ 3092 root      19   0  2112  448  372 S    0  0.0   0:00.00 acpid                                                                                             
+ 3202 root      16   0  4324 1140  836 S    0  0.0   3:21.49 sshd                                                                                              
+ 3217 root      15   0  3416  768  636 S    0  0.0   0:00.00 xinetd                                                                                            
+ 3230 ntp       16   0  4444 4444 3428 S    0  0.1   5:30.94 ntpd                                                                                              
+ 3246 root      19   0  7112 1292  980 S    0  0.0   0:00.00 esmd                                                                                              
+ 3264 root      16   0 10268 2152  988 S    0  0.0   5:35.63 sendmail                                                                                          
+ 3273 smmsp     16   0  7276 1572  756 S    0  0.0   0:00.01 sendmail                                                                                          
+ 3284 root      16   0  2892  344  272 S    0  0.0   0:00.00 gpm                                                                                               
+ 3294 root      16   0  5500  936  548 S    0  0.0   0:11.79 crond                                                                                             
+ 3317 xfs       16   0  4412 1492  748 S    0  0.0   0:00.52 xfs                                                                                               
+ 3441 root      16   0  3608  428  312 S    0  0.0   0:07.31 atd                                                                                               
+ 3457 dbus      16   0  3928  876  656 S    0  0.0   0:00.09 dbus-daemon-1                                                                                     
+ 3470 root      20   0  3080  892  768 S    0  0.0   0:00.00 cups-config-dae                                                                                   
+ 3481 root      16   0  8512 6004 1184 D    0  0.1   2:30.25 hald                                                                                              
+ 3490 root      18   0  2044  388  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 3491 root      18   0  2060  384  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 3492 root      18   0  1852  388  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 3493 root      18   0  2940  388  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 3494 root      18   0  1500  388  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 3495 root      18   0  1664  384  332 S    0  0.0   0:00.00 mingetty                                                                                          
+ 9329 root      15   0     0    0    0 S    0  0.0  60:28.69 rpciod                                                                                            
+ 9330 root      19   0     0    0    0 S    0  0.0   0:00.00 lockd                                                                                             
+11454 root      17   0  7044 2256 1816 S    0  0.0   0:00.00 sshd                                                                                              
+11456 rb868x    16   0  7188 1552 1092 S    0  0.0   0:00.08 sshd                                                                                              
+11457 rb868x    16   0  5212 1432 1196 S    0  0.0   0:00.02 bash                                                                                              
+11933 root      16   0  7520 2252 1816 S    0  0.0   0:00.00 sshd                                                                                              
+11935 rb868x    16   0  7520 1528 1084 S    0  0.0   0:00.00 sshd                                                                                              
+11936 rb868x    16   0  6128 1416 1188 S    0  0.0   0:00.00 bash                                                                                              
+11962 rb868x    15   0  3640  848  676 R    0  0.0   0:00.00 top                                                                                               
+13308 nagios    15   0  5276  976  748 S    0  0.0   6:34.49 nrpe                                                                                              
+19983 root      25   0  5568 1152  916 S    0  0.0   0:00.00 su                                                                                                
+19985 flood     16   0 12616 6636 2284 S    0  0.1   0:01.37 python-flood                                                                                      
+22189 root      16   0  8428 2128 1576 S    0  0.0   0:00.01 cupsd                                                                                             
+24350 sgeadmin  16   0  5324 1916 1456 S    0  0.0  32:31.75 sge_execd                                                                                         
+24922 root       7 -10  2712 1068  944 S    0  0.0   0:00.00 hotplug                                                                                           
+24930 root       7 -10  3352 1072  944 S    0  0.0   0:00.00 hotplug                                                                                           
+24935 root       9 -10  3256  404  344 S    0  0.0   0:00.00 20-hal.hotplug                                                                                    
+24937 root      10 -10  2412  208  160 S    0  0.0   0:00.00 10-hal.dev                                                                                        
+24942 root       9 -10  3184  404  344 S    0  0.0   0:00.00 20-hal.hotplug                                                                                    
+25489 root      15   0     0    0    0 S    0  0.0   0:00.87 pdflush                                                                                           
+
