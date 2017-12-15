@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+############################################
+# rb868x 1063 Sep  5 15:32 findLastLoginAndEmailAndLock.exe
+# Verified on RedHat 5.8
+#
+# findLastLoginAndEmail.exe is a wrapper script that calls:
+# findLastLogin.bash
+# findUidExceptions.bash
+# and sets up an email string as well as builds a file to re-add accounts (if necessary)
+############################################
+
+
+# lastlog -u <USER id>
+# last -1 <USER id>
+
+rm EMAIL_USERS MKDIR_DELETED_ACCOUNTS 2>/dev/null
+./findLastLogin.bash
+./findUidExceptions.bash
+
+# Create a file of mkdir commands to recreate user accounts that are to be deleted
+cat ACCOUNT |while read i; do
+   getent passwd |grep $i |sed "s/\(.*\):\(.*\):\(.*\):\(.*\):\(.*\):\(.*\):\(.*\)/mkdir \6;chown \3:\4 \6/"  >> MKDIR_DELETED_ACCOUNTS
+done
+
+# Create an email string to inform users that their account is targeted for deletion
+cat ACCOUNT | sed "s/$/;/"|sed "s/[ ]*//g"| tr "\012" "\00" > EMAIL_USERS
+
+# Lock user accounts that have not been accessed in #days
+   cat ACCOUNT |while read i; do
+   passwd -l $i
+done
