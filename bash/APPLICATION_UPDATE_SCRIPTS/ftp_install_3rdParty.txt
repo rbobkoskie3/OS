@@ -1,0 +1,8 @@
+beecrypt-4.1.2-10.1.1.el6.rf.x86_64.rpm
+beecrypt-devel-4.1.2-10.1.1.el6.rf.x86_64.rpm
+Python27-sis-es66-2.7.10-10.x86_64.rpm
+python-sqlite-sis-es66-py27-2.5.6-1.x86_64.rpm
+python-twisted-sis-es66-py27-12.0.0-1.x86_64.rpm
+sqlite-sis-es66-3.7.14.1-1.x86_64.rpm
+sqlite-sis-es66-devel-3.7.14.1-1.x86_64.rpm
+zope-interface-sis-es66-py27-3.8.0-1.x86_64.rpm
