@@ -1,0 +1,35 @@
+
+// Find and kill zombie processes Solaris ---  preap $(ps -ef | grep defunct | awk '{ print $2 }' | xargs):
+
+# preap $(ps -ef | grep defunct | awk '{ print $2 }' | xargs)
+preap: unsafe to reap 11129; parent is stopped and may reap status upon restart
+preap: cannot examine 13903: no such process
+
+$ ps -el | grep 'Z'
+ F S    UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN TTY         TIME CMD
+ 0 Z   2101 11129 11052   0   0  -        -      0  
+# preap 11129
+preap: unsafe to reap 11129; parent is stopped and may reap status upon restart
+
+# ptree 11129
+18722 /usr/lib/ssh/sshd
+  10006 /usr/lib/ssh/sshd
+    10009 /usr/lib/ssh/sshd
+      10011 -bash
+        10019 -sh
+          10090 -ksh
+            11052 python-flood /opt/sims/bin/binedit -e -u -b bin9.ip
+              11129 <defunct>
+
+// Kill Parent PID, No Zombie:
+# kill -9 11052
+# ps -el | grep 'Z'
+ F S    UID   PID  PPID   C PRI NI     ADDR     SZ    WCHAN TTY         TIME CMD
+
+
+// Find and kill zombie processes Linux --- ps aux | awk '{ print $8 " " $2 }' | grep -w Z; kill -9 <PID>:
+
+ps aux | awk '{ print $8 " " $2 }' | grep -w Z
+ps -eo state= | grep Z
+
+
