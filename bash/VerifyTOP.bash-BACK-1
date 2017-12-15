@@ -1,0 +1,81 @@
+#! /bin/bash
+
+clear
+
+TOPDIR=/tmp/TOP
+rm $TOPDIR 2>/dev/null
+TMP_1=/tmp/TMP_1
+TMP_2=/tmp/TMP_2
+
+# ALL='(8[5-9]|9[0-9]|100)\.[0-9]+|100'
+ALL='(^[^A-Z,a-z])'.*'(8[5-9]|9[0-9]|100)\.[0-9]+|100'
+INFO='(8[5-9])\.[0-9]+'
+WARNING='(9[0-5])\.[0-9]+'
+CRITICAL='(9[6-9]|100)\.[0-9]+|100'
+
+OS=`uname -s`
+if [ `echo $OS |grep -i linux` ]; then
+   OS=linux
+   top -bn 1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s\n", $9, $10, $2, $1 }' | egrep $ALL > $TMP_1
+else
+   OS=solaris 
+   top | awk -F' ' '{ printf "%-10s %-10s %-10s\n", $10, $2, $1 }' | egrep $ALL > $TMP_1 
+fi
+
+
+grep '.*' $TMP_1 2>&1 >/dev/null
+if [ $? -eq 0 ]; then
+   echo The following processes are using resources, output also saved in $TOPDIR
+   if [ $OS == linux ]; then
+      echo "CPU MEM USER PID" | awk '{ printf "%-10s %-10s %-10s %-10s\n\n", $1, $2, $3, $4 }' |tee -a $DISK_SPACE
+   else
+      echo "CPU USERNAME PID" | awk '{ printf "%-10s %-10s %-10s\n\n", $1, $2, $3 }' |tee -a $DISK_SPACE
+   fi
+else
+   echo system processes are in check
+   exit 1
+fi
+
+# echo -e "`date +%Y' '%m/%d' '%H:%M:%S` WARNING:"
+
+# INFO 
+if [ $OS == linux ]; then
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s %-10s\n", "INFO:", $1, $2, $3, $4 }' | egrep $INFO > $TMP_2
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+else
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s\n", "INFO:", $1, $2, $3 }' | egrep $INFO > $TMP_2 
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+fi
+
+# WARNING
+if [ $OS == linux ]; then
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s %-10s\n", "WARNING:", $1, $2, $3, $4 }' | egrep $WARNING > $TMP_2
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+else
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s\n", "WARNING:", $1, $2, $3 }' | egrep $WARNING > $TMP_2
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+fi
+
+# CRITICAL 
+if [ $OS == linux ]; then
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s %-10s\n", "CRITICAL:", $1, $2, $3, $4 }' | egrep $CRITICAL > $TMP_2
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+else
+   cat $TMP_1 | awk -F' ' '{ printf "%-10s %-10s %-10s %-10s\n", "CRITICAL:", $1, $2, $3 }' | egrep $CRITICAL > $TMP_2
+   if [ -f $TMP_2 ]; then
+      cat $TMP_2 |tee -a $TOPDIR
+   fi
+fi
+
+rm $TMP_1
+rm $TMP_2

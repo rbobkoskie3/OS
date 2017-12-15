@@ -1,0 +1,38 @@
+#! /bin/bash
+
+clear
+DISK_SPACE=/tmp/Disk-Space-Utilization
+rm $DISK_SPACE 2>/dev/null
+
+ALL='(8[5-9]|9[0-9]|100)'%
+INFO='(8[5-9])'%
+WARNING='(9[0-5])'%
+CRITICAL='(9[6-9]|100)'%
+
+df -h | egrep $ALL > /tmp/df
+if [ -f /tmp/df ]; then
+   echo The following filesystems are near maximum capacitiy, output also saved in $DISK_SPACE
+else
+   echo Filesystems are OK
+   exit 1
+fi
+
+# cat JUNK | awk -F' ' '{ printf "CRITICAL: " }{ printf $5 }{ printf "\t" }{ printf $1 }{ printf "\t ==> " }{ print $6 }'
+# echo -e "`date +%Y' '%m/%d' '%H:%M:%S` WARNING:"
+ 
+egrep $INFO /tmp/df > /tmp/RM
+if [ -f /tmp/RM ]; then
+   cat /tmp/RM | awk -F' ' '{ printf "INFO: %-10s %-10s ==> %-10s\n", $5, $1, $6 }'
+fi
+
+egrep $WARNING /tmp/df > /tmp/RM
+if [ -f /tmp/RM ]; then
+   cat /tmp/RM | awk -F' ' '{ printf "WARNING: %-10s %-10s ==> %-10s\n", $5, $1, $6 }'
+fi
+
+egrep $CRITICAL /tmp/df > /tmp/RM
+if [ -f /tmp/RM ]; then
+   cat /tmp/RM | awk -F' ' '{ printf "CRITICAL: %-10s %-10s ==> %-10s\n", $5, $1, $6 }'
+fi
+rm /tmp/df
+rm /tmp/RM
