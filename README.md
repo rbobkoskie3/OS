@@ -48,7 +48,6 @@ remote: Resolving deltas: 100% (16/16), completed with 1 local object.
 To https://github.com/rbobkoskie3/GEORGIA-TECH.git
    6f7ea7c..fc1d6b8  master -> master
 
-
 // Remove untracked files and directories from the working tree when
    switching branches or checking out different commits:
    git reset --hard
