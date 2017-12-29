@@ -86,7 +86,6 @@ To https://github.com/rbobkoskie3/GTECH_CS6475-CP.git
 ! [remote rejected] master -> master (pre-receive hook declined)
 error: failed to push some refs to 'https://github.com/rbobkoskie3/GTECH_CS6475-
 CP.git'
-
 C:\PYCODE\GITHUB\GTECH_CS6475-CP>git reset HEAD~
 Unstaged changes after reset:
 D       CS6475-CP_LECTURE-NOTES.pdf
