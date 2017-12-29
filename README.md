@@ -88,4 +88,3 @@ CP.git'
 C:\PYCODE\GITHUB\GTECH_CS6475-CP>git reset HEAD~
 Unstaged changes after reset:
 D       CS6475-CP_LECTURE-NOTES.pdf
-====================================================
