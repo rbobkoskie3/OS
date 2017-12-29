@@ -17,10 +17,7 @@ remote: Total 160 (delta 3), reused 0 (delta 0), pack-reused 138
 Receiving objects: 100% (160/160), 139.43 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (17/17), done.
 
-// Change the current working directory to your local repository, and
-// Stage the file(s) for commit to your local repository, e.g., copy
-   files into the
-// local repository:
+// Change the current working directory to your local repository, and stage the file(s) for commit to your local repository, e.g., copy files into the local repository:
    git add .
 
 C:\PYCODE\GTECH GITHUB>cd GEORGIA-TECH
@@ -48,21 +45,18 @@ remote: Resolving deltas: 100% (16/16), completed with 1 local object.
 To https://github.com/rbobkoskie3/GEORGIA-TECH.git
    6f7ea7c..fc1d6b8  master -> master
 
-// Remove untracked files and directories from the working tree when
-   switching branches or checking out different commits:
+// Remove untracked files and directories from the working tree when switching branches or checking out different commits:
    git reset --hard
    git clean -f -d
 
-	// Cleanup unnecessary files and optimize the local repository:
+// Cleanup unnecessary files and optimize the local repository:
    git gc
 
-// Deletes all stale tracking branches which have already been
-   removed at origin but are still locally available in
-   remotes/origin:
-         git remote prune origin
+// Deletes all stale tracking branches which have already been removed at origin but are still locally available in remotes/origin:
+   git remote prune origin
 
 // Delete untracked files from your tree:
-         git clean
+   git clean
 
 
 // Delete the last commit:
