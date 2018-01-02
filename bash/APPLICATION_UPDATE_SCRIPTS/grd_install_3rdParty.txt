@@ -1,7 +1,0 @@
-beecrypt-4.1.2-10.1.1.el6.rf.x86_64.rpm
-beecrypt-devel-4.1.2-10.1.1.el6.rf.x86_64.rpm
-boost-regex-1.41.0-27.el6.x86_64.rpm
-daytona-winter2014-sis-es66-1.0-1.x86_64.rpm
-glib2-devel-2.28.8-4.el6.x86_64.rpm
-Python27-sis-es66-2.7.10-10.x86_64.rpm
-python-sqlite-sis-es66-py27-2.5.6-1.x86_64.rpm
