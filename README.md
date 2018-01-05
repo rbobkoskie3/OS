@@ -4,12 +4,10 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 ========================================================
 
 ### GIT COMMANDS
-__TEST BOLD__
-**TEST BOLD**
 1. Create repository on GitHub website.
 2. Clone repository from windows command line:
 ```
-__git clone https://github.com/<USER>/<REPOSITORY>__
+git clone https://github.com/<USER>/<REPOSITORY>
    C:\PYCODE>cd "GTECH GITHUB"
    C:\PYCODE\GTECH GITHUB>git clone https://github.com/rbobkoskie3/GEORGIA-TECH.git
    Cloning into 'GEORGIA-TECH'...
@@ -21,6 +19,7 @@ __git clone https://github.com/<USER>/<REPOSITORY>__
 ```
 
 3. Change the current working directory to your local repository, and stage the file(s) for commit to your local repository, e.g., copy files into the local repository:
+
 **git add .**
 ```javascript
 C:\PYCODE\GTECH GITHUB>cd GEORGIA-TECH
