@@ -7,7 +7,7 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 1. Create repository on GitHub website.
 2. Clone repository from windows command line:
 
-   **git clone https://github.com/<USER\>/\<REPOSITORY\>**
+   **git clone https://github.com/<USER\>/\<REPOSITORY\>.git**
 ```
    C:\PYCODE>cd "GTECH GITHUB"
    C:\PYCODE\GTECH GITHUB>git clone https://github.com/rbobkoskie3/GEORGIA-TECH.git
@@ -28,6 +28,7 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 ```
 
 4. Commit the file that you've staged in your local repository:
+
    **git commit -ma**
    **git commit -m <FILE>**
 ```
@@ -85,8 +86,7 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
    remote: error: File CS6475-CP_LECTURE-NOTES.pdf is 228.72 MB; this exceeds GitHub's file size limit of 100.00 MB
    To https://github.com/rbobkoskie3/GTECH_CS6475-CP.git
    ! [remote rejected] master -> master (pre-receive hook declined)
-   error: failed to push some refs to 'https://github.com/rbobkoskie3/GTECH_CS6475-
-CP.git'
+   error: failed to push some refs to 'https://github.com/rbobkoskie3/GTECH_CS6475-CP.git'
    C:\PYCODE\GITHUB\GTECH_CS6475-CP>git reset HEAD~
    Unstaged changes after reset:
    D       CS6475-CP_LECTURE-NOTES.pdf
