@@ -3,11 +3,11 @@
 This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python scripts to automate common tasks and commands.
 ====================================================
 
-# GIT COMMANDS
-// Create repository on GitHub website.
-// Clone repository from windows command line:
-   git clone https://github.com/<USER>/<REPOSITORY>
-
+## GIT COMMANDS
+1. Create repository on GitHub website.
+2. Clone repository from windows command line:
+   **git clone https://github.com/<USER>/<REPOSITORY>**
+```
 C:\PYCODE>cd "GTECH GITHUB"
 C:\PYCODE\GTECH GITHUB>git clone https://github.com/rbobkoskie3/GEORGIA-TECH.git
 Cloning into 'GEORGIA-TECH'...
@@ -16,26 +16,26 @@ remote: Compressing objects: 100% (22/22), done.
 remote: Total 160 (delta 3), reused 0 (delta 0), pack-reused 138
 Receiving objects: 100% (160/160), 139.43 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (17/17), done.
+```
 
-// Change the current working directory to your local repository, and stage the file(s) for commit to your local repository, e.g., copy files into the local repository:
-   git add .
-
+3. Change the current working directory to your local repository, and stage the file(s) for commit to your local repository, e.g., copy files into the local repository:
+   **git add .**
+```
 C:\PYCODE\GTECH GITHUB>cd GEORGIA-TECH
 C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git add .
+```
 
-// Commit the file that you've staged in your local repository:
-   git commit -ma
-   git commit -m <FILE>
-
+4. Commit the file that you've staged in your local repository:
+   **git commit -ma**
+   **git commit -m <FILE>**
+```
 C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git commit -ma
+```
 
-// Push the changes in your local repository to GitHub:
-   git push origin
-
+5. Push the changes in your local repository to GitHub:
+   **git push origin**
+```
 C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git push origin
-Logon failed, use ctrl+c to cancel basic credential prompt.
-Username for 'https://github.com/': rbobkoskie3
-Password for 'https://rbobkoskie3@github.com/':
 Counting objects: 1311, done.
 Delta compression using up to 8 threads.
 Compressing objects: 100% (1296/1296), done.
@@ -44,24 +44,27 @@ Total 1311 (delta 16), reused 0 (delta 0)
 remote: Resolving deltas: 100% (16/16), completed with 1 local object.
 To https://github.com/rbobkoskie3/GEORGIA-TECH.git
    6f7ea7c..fc1d6b8  master -> master
+```
 
-// Remove untracked files and directories from the working tree when switching branches or checking out different commits:
-   git reset --hard
-   git clean -f -d
+### GIT CLEANUP
 
-// Cleanup unnecessary files and optimize the local repository:
-   git gc
+- Remove untracked files and directories from the working tree when switching branches or checking out different commits:
+   **git reset --hard**
+   **git clean -f -d**
 
-// Deletes all stale tracking branches which have already been removed at origin but are still locally available in remotes/origin:
-   git remote prune origin
+- Cleanup unnecessary files and optimize the local repository:
+   **git gc**
 
-// Delete untracked files from your tree:
-   git clean
+- Deletes all stale tracking branches which have already been removed at origin but are still locally available in remotes/origin:
+   **git remote prune origin**
+
+- Delete untracked files from your tree:
+   **git clean**
 
 
-// Delete the last commit:
-   git reset HEAD~
-
+- Delete the last commit:
+   **git reset HEAD~**
+```
 C:\PYCODE\GITHUB\GTECH_CS6475-CP>git push origin
 Counting objects: 14, done.
 Delta compression using up to 8 threads.
@@ -82,3 +85,4 @@ CP.git'
 C:\PYCODE\GITHUB\GTECH_CS6475-CP>git reset HEAD~
 Unstaged changes after reset:
 D       CS6475-CP_LECTURE-NOTES.pdf
+```
