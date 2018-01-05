@@ -4,6 +4,8 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 ========================================================
 
 ### GIT COMMANDS
+__TEST BOLD__
+**TEST BOLD**
 1. Create repository on GitHub website.
 2. Clone repository from windows command line:
 ```
