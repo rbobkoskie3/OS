@@ -1,12 +1,12 @@
 # OS
 
 This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python scripts to automate common tasks and commands.
-====================================================
+
 
 ## GIT COMMANDS
 1. Create repository on GitHub website.
 2. Clone repository from windows command line:
-   **git clone https://github.com/<USER>/<REPOSITORY>**
+**git clone https://github.com/<USER>/<REPOSITORY>**
 ```
 C:\PYCODE>cd "GTECH GITHUB"
 C:\PYCODE\GTECH GITHUB>git clone https://github.com/rbobkoskie3/GEORGIA-TECH.git
@@ -19,8 +19,8 @@ Resolving deltas: 100% (17/17), done.
 ```
 
 3. Change the current working directory to your local repository, and stage the file(s) for commit to your local repository, e.g., copy files into the local repository:
-   **git add .**
-```
+**git add .**
+```javascript
 C:\PYCODE\GTECH GITHUB>cd GEORGIA-TECH
 C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git add .
 ```
@@ -34,7 +34,7 @@ C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git commit -ma
 
 5. Push the changes in your local repository to GitHub:
    **git push origin**
-```
+```javascript
 C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git push origin
 Counting objects: 1311, done.
 Delta compression using up to 8 threads.
@@ -47,24 +47,23 @@ To https://github.com/rbobkoskie3/GEORGIA-TECH.git
 ```
 
 ### GIT CLEANUP
-
-- Remove untracked files and directories from the working tree when switching branches or checking out different commits:
+* Remove untracked files and directories from the working tree when switching branches or checking out different commits:
    **git reset --hard**
    **git clean -f -d**
 
-- Cleanup unnecessary files and optimize the local repository:
+* Cleanup unnecessary files and optimize the local repository:
    **git gc**
 
-- Deletes all stale tracking branches which have already been removed at origin but are still locally available in remotes/origin:
+* Deletes all stale tracking branches which have already been removed at origin but are still locally available in remotes/origin:
    **git remote prune origin**
 
-- Delete untracked files from your tree:
+* Delete untracked files from your tree:
    **git clean**
 
 
-- Delete the last commit:
-   **git reset HEAD~**
-```
+* Delete the last commit:
+**git reset HEAD~**
+```javascript
 C:\PYCODE\GITHUB\GTECH_CS6475-CP>git push origin
 Counting objects: 14, done.
 Delta compression using up to 8 threads.
