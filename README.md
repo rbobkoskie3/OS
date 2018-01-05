@@ -30,6 +30,7 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 4. Commit the file that you've staged in your local repository:
 
    **git commit -ma**
+
    **git commit -m <FILE>**
 ```
    C:\PYCODE\GTECH GITHUB\GEORGIA-TECH>git commit -ma
@@ -54,6 +55,7 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 * Remove untracked files and directories from the working tree when switching branches or checking out different commits:
 
    **git reset --hard**
+
    **git clean -f -d**
 
 * Cleanup unnecessary files and optimize the local repository:
