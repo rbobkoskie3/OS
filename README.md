@@ -7,10 +7,10 @@ This repository contains Miscellaneous Code: Java, C, Shell (Bash) and Python sc
 1. Create repository on GitHub website.
 2. Clone repository from windows command line:
 ```
-**git clone https://github.com/<USER>/<REPOSITORY>**
+__git clone https://github.com/<USER>/<REPOSITORY>__
    C:\PYCODE>cd "GTECH GITHUB"
    C:\PYCODE\GTECH GITHUB>git clone https://github.com/rbobkoskie3/GEORGIA-TECH.git
-Cloning into 'GEORGIA-TECH'...
+   Cloning into 'GEORGIA-TECH'...
    remote: Counting objects: 160, done.
    remote: Compressing objects: 100% (22/22), done.
    remote: Total 160 (delta 3), reused 0 (delta 0), pack-reused 138
